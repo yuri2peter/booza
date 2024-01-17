@@ -1,5 +1,10 @@
 import { app, BrowserWindow } from 'electron';
-import { DEV_RENDERER_PORT, IS_DEV, USE_WEB_SERVER } from 'src/common/config';
+import {
+  APP_NAME,
+  DEV_RENDERER_PORT,
+  IS_DEV,
+  USE_WEB_SERVER,
+} from 'src/common/config';
 import {
   rendererIndexPath,
   preloadPath,
@@ -16,6 +21,7 @@ export default async function startElectron(port = 0) {
     const win = new BrowserWindow({
       width: 1280,
       height: 720,
+      title: APP_NAME,
       webPreferences: {
         preload: preloadPath,
       },

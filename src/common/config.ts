@@ -7,6 +7,9 @@ export const APP_NAME = 'Empty Project';
 // 是否mac
 export const IS_MAC = process.platform === 'darwin';
 
+// 是否win
+export const IS_WIN = process.platform === 'win32';
+
 // 是否开发模式
 export const IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -29,20 +32,20 @@ export const MAX_UPLOAD_FILE_SIZE = 0;
 export const UPLOADS_URL_PREFIX = '/uploads';
 
 // 开发渲染时不限制host(DANGER)
-export const DEV_RENDERER_ALLOWED_ALL_HOSTS = true;
+export const DEV_RENDERER_ALLOWED_ALL_HOSTS = false;
 
 // 启用CHII调试器
-export const USE_CHII = true;
+export const USE_CHII = false;
 
 // 启用web server
 export const USE_WEB_SERVER = true;
 
 // 启用socket（需要启动web server）
-export const USE_SOCKET = USE_WEB_SERVER && true;
+export const USE_SOCKET = USE_WEB_SERVER && false;
 
 // 启用electron
-export const USE_ELECTRON = true;
+export const USE_ELECTRON = false;
 
 // 服务端启动后是否打开浏览器
 export const OPEN_BROWSER_AFTER_WEB_SERVER_START =
-  !USE_ELECTRON && USE_WEB_SERVER && true;
+  !USE_ELECTRON && USE_WEB_SERVER && IS_WIN && true;

@@ -1,7 +1,5 @@
 import { USE_ELECTRON, USE_WEB_SERVER } from 'src/common/config';
 import prepares from './prepares';
-import startWeb from './web/startWeb';
-import startElectron from './electron/startElectron';
 import { fileLog } from './utils/log';
 
 async function main() {
@@ -10,9 +8,11 @@ async function main() {
 
   let port = 0;
   if (USE_WEB_SERVER) {
+    const { default: startWeb } = await import('./web/startWeb');
     port = await startWeb();
   }
   if (USE_ELECTRON) {
+    const { default: startElectron } = await import('./electron/startElectron');
     await startElectron(port);
   }
 }
