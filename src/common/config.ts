@@ -1,0 +1,48 @@
+// 项目名
+export const PROJECT_NAME = 'empty-project';
+
+// 应用名
+export const APP_NAME = 'Empty Project';
+
+// 是否mac
+export const IS_MAC = process.platform === 'darwin';
+
+// 是否开发模式
+export const IS_DEV = process.env.NODE_ENV === 'development';
+
+// 开发渲染端口
+export const DEV_RENDERER_PORT = 8000;
+
+// 服务端口，如果为0，系统会随机选择
+export const SERVER_PORT = IS_DEV ? 3000 : 0;
+
+// chii 调试工具端口
+export const CHII_PORT = 8080;
+
+// 服务端是否跨域
+export const USE_CORS = false;
+
+// 上传文件(DANGER)最大限制 1024 * 1024 * 1024 表示 1G
+export const MAX_UPLOAD_FILE_SIZE = 0;
+
+// 上传文件访问前缀
+export const UPLOADS_URL_PREFIX = '/uploads';
+
+// 开发渲染时不限制host(DANGER)
+export const DEV_RENDERER_ALLOWED_ALL_HOSTS = true;
+
+// 启用CHII调试器
+export const USE_CHII = true;
+
+// 启用web server
+export const USE_WEB_SERVER = true;
+
+// 启用socket（需要启动web server）
+export const USE_SOCKET = USE_WEB_SERVER && true;
+
+// 启用electron
+export const USE_ELECTRON = true;
+
+// 服务端启动后是否打开浏览器
+export const OPEN_BROWSER_AFTER_WEB_SERVER_START =
+  !USE_ELECTRON && USE_WEB_SERVER && true;
