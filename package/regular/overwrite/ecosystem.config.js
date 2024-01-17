@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'empty-project',
+      name: 'booza',
       script: './dist/server/main.js',
       env: {
         NODE_ENV: 'production',

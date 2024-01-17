@@ -13,7 +13,7 @@ export function fileLog(message: string, sectionName = 'info') {
 
 export async function showLargeTitle() {
   cfonts.say(PROJECT_NAME, {
-    font: 'tiny',
+    font: 'block',
     gradient: ['red', 'blue'],
   });
 }

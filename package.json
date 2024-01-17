@@ -1,8 +1,8 @@
 {
-  "name": "empty-project",
-  "description": "empty-project",
+  "name": "booza",
+  "description": "booza",
   "version": "0.0.1",
-  "author": "empty-project",
+  "author": "booza",
   "type": "commonjs",
   "boilerplate": {
     "project": "booza",

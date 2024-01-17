@@ -1,8 +1,8 @@
 // 项目名
-export const PROJECT_NAME = 'empty-project';
+export const PROJECT_NAME = 'booza';
 
 // 应用名
-export const APP_NAME = 'Empty Project';
+export const APP_NAME = 'Booza App';
 
 // 是否mac
 export const IS_MAC = process.platform === 'darwin';
@@ -25,7 +25,7 @@ export const CHII_PORT = 8080;
 // 服务端是否跨域
 export const USE_CORS = false;
 
-// 上传文件(DANGER)最大限制 1024 * 1024 * 1024 表示 1G
+// 上传文件(DANGER)最大限制, 1024 * 1024 * 1024 表示 1G
 export const MAX_UPLOAD_FILE_SIZE = 0;
 
 // 上传文件访问前缀
@@ -41,11 +41,11 @@ export const USE_CHII = false;
 export const USE_WEB_SERVER = true;
 
 // 启用socket（需要启动web server）
-export const USE_SOCKET = USE_WEB_SERVER && false;
+export const USE_SOCKET = false && USE_WEB_SERVER;
 
 // 启用electron
 export const USE_ELECTRON = false;
 
-// 服务端启动后是否打开浏览器
+// 服务端启动后是否自动打开浏览器
 export const OPEN_BROWSER_AFTER_WEB_SERVER_START =
-  !USE_ELECTRON && USE_WEB_SERVER && IS_WIN && true;
+  true && !USE_ELECTRON && USE_WEB_SERVER && IS_WIN && !IS_DEV;

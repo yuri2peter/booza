@@ -1,7 +1,7 @@
-version: "3.8"
+version: '3.8'
 services:
-  empty-project:
-    image: "empty-project:v1"
+  booza:
+    image: 'booza:v1'
     restart: unless-stopped
     volumes:
       - ./runtime:/dist/runtime
