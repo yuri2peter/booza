@@ -22,6 +22,7 @@ import {
   USE_WEB_SERVER,
   USE_SOCKET,
   USE_CHII,
+  OPEN_BROWSER_AFTER_WEB_DEV_START,
 } from '../src/common/config';
 
 const config: Configuration = {
@@ -150,6 +151,9 @@ const config: Configuration = {
   },
   devServer: {
     port: DEV_RENDERER_PORT,
+    open: OPEN_BROWSER_AFTER_WEB_DEV_START && {
+      target: ['http://127.0.0.1:' + DEV_RENDERER_PORT],
+    },
     hot: true,
     watchFiles: [
       'src/common/**/*',
@@ -169,6 +173,7 @@ const config: Configuration = {
       },
     ],
     historyApiFallback: true,
+    client: { progress: true },
     proxy: proxyConfigParser({
       // API请求代理
       '/api': [

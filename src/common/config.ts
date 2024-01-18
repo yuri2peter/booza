@@ -49,3 +49,7 @@ export const USE_ELECTRON = false;
 // 服务端启动后是否自动打开浏览器
 export const OPEN_BROWSER_AFTER_WEB_SERVER_START =
   true && !USE_ELECTRON && USE_WEB_SERVER && IS_WIN && !IS_DEV;
+
+// 前端web开发时是否自动打开浏览器
+export const OPEN_BROWSER_AFTER_WEB_DEV_START =
+  true && IS_DEV && IS_WIN && !USE_ELECTRON;
