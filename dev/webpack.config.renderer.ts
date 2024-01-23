@@ -9,6 +9,7 @@ import {
   srcPath,
 } from '../src/common/paths.project';
 import TsconfigPathsPlugins from 'tsconfig-paths-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
@@ -122,6 +123,7 @@ const config: Configuration = {
         { from: rendererAssetsPath, to: 'assets' },
       ],
     }),
+    new CompressionPlugin({}),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: rendererSrcHtmlPath,
