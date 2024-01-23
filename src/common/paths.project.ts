@@ -18,3 +18,4 @@ export const serverSrcPreloadPath = path.resolve(
   'electron/preload.ts'
 );
 export const serverAssetsPath = path.resolve(assetsPath, 'server');
+export const srcEnvPath = path.resolve(srcPath, '.env');

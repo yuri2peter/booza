@@ -14,3 +14,4 @@ export const serverAssetsIconPath = path.resolve(
   serverPath,
   'assets/icons/png/128x128.png'
 );
+export const AppEnvPath = path.resolve(AppPath, '.env');

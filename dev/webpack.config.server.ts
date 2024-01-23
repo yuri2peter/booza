@@ -7,6 +7,7 @@ import {
   serverAssetsPath,
   srcPath,
   rootAssetsPath,
+  srcEnvPath,
 } from '../src/common/paths.project';
 import CopyPlugin from 'copy-webpack-plugin';
 import TsconfigPathsPlugins from 'tsconfig-paths-webpack-plugin';
@@ -42,6 +43,7 @@ const config: Configuration = {
         { from: commonAssetsPath, to: 'assets' },
         { from: serverAssetsPath, to: 'assets' },
         { from: rootAssetsPath, to: '../' },
+        { from: srcEnvPath, to: '../' },
       ],
     }),
     // @ts-ignore

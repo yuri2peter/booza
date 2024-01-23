@@ -9,6 +9,7 @@ const pathRelease = path.resolve(__dirname, 'release');
 const pathContext = path.resolve(__dirname, 'context');
 const pathContextDist = path.resolve(pathContext, 'dist');
 const pathContextDistRuntime = path.resolve(pathContextDist, 'runtime');
+const pathContextDistEnv = path.resolve(pathContextDist, '.env');
 const pathArchive = path.resolve(pathRelease, 'archive.zip');
 const pathIcon = path.resolve(
   pathDist,
@@ -28,6 +29,7 @@ async function main() {
   await fs.emptyDir(pathContextDist);
   await fs.copy(pathDist, pathContextDist);
   await fs.emptyDir(pathContextDistRuntime);
+  await fs.writeFile(pathContextDistEnv, '');
   // 打包 (release/my-app-win32-x64)
   await packager({
     dir: pathContextDist,

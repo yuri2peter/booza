@@ -24,7 +24,7 @@ type BackupPlan = z.infer<typeof backupPlanSchema>;
 export type DataVersionFixer<T, U = unknown> = (
   record: Record<U>,
   setData: (recipe: (base: U) => T) => void,
-  changeData: (recipe: (base: U) => never) => void
+  changeData: (recipe: (base: U) => undefined) => void
 ) => void;
 
 // 数据记录
@@ -90,7 +90,7 @@ export default class JsonDb<T> {
    * see more usage at `immer.js`
    * @param recipe change value inside the recipe, but no returns
    */
-  changeData(recipe: (base: T) => void) {
+  changeData(recipe: (base: T) => undefined) {
     this.data = produce((d) => {
       recipe(d);
     })(this.data) as Immutable<T>;

@@ -1,5 +1,6 @@
-import { USE_ELECTRON, USE_WEB_SERVER } from 'src/common/config';
+import './importEnv';
 import prepares from './prepares';
+import { USE_ELECTRON, USE_WEB_SERVER } from 'src/common/config';
 import { fileLog } from './utils/log';
 
 async function main() {

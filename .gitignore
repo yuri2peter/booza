@@ -25,3 +25,4 @@ Thumbs.db
 /package/electron/context
 /package/project/release
 /archive.zip
+/src/.env

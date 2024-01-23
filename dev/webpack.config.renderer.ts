@@ -116,6 +116,7 @@ const config: Configuration = {
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.platform': '"browser"',
+      process: '{env:{}}',
     }),
     new CopyPlugin({
       patterns: [

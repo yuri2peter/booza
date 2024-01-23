@@ -7,6 +7,7 @@ const pathRelease = path.resolve(__dirname, 'release');
 const pathReleaseOutput = path.resolve(pathRelease, 'output');
 const pathArchive = path.resolve(pathRelease, 'archive.zip');
 const pathReleaseOutputDist = path.resolve(pathReleaseOutput, 'dist');
+const pathReleaseOutputDistEnv = path.resolve(pathReleaseOutputDist, '.env');
 const pathReleaseOutputDistRuntime = path.resolve(
   pathReleaseOutputDist,
   'runtime'
@@ -23,6 +24,8 @@ async function main() {
   await fs.copy(pathDist, pathReleaseOutputDist);
   // 清空runtime
   await fs.emptyDir(pathReleaseOutputDistRuntime);
+  // 清空env
+  await fs.writeFile(pathReleaseOutputDistEnv, '');
   // 拷贝overwrite
   await fs.copy(pathOverwrite, pathReleaseOutput);
   // 压缩

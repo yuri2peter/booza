@@ -17,7 +17,9 @@ export const IS_DEV = process.env.NODE_ENV === 'development';
 export const DEV_RENDERER_PORT = 8000;
 
 // 服务端口，如果为0，系统会随机选择
-export const SERVER_PORT = IS_DEV ? 3000 : 0;
+export const SERVER_PORT = IS_DEV
+  ? 3000
+  : Number(process.env.SERVER_PORT || '0');
 
 // chii 调试工具端口
 export const CHII_PORT = 8080;

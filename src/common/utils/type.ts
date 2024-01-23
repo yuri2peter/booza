@@ -45,10 +45,11 @@ export function zodSafeArray<T extends ZodTypeAny>(
 
 export function zodSafeType<T extends ZodTypeAny>(
   schema: T,
-  defaultValue: z.infer<T>
+  defaultValue?: z.infer<T>
 ) {
+  const defaultValueFixed: z.infer<T> = schema.parse(defaultValue || {});
   return schema
     .nullable()
     .optional()
-    .transform((t) => t || defaultValue);
+    .transform((t) => t || defaultValueFixed);
 }
