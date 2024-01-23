@@ -21,9 +21,10 @@ const backupPlanSchema = z.object({
 type BackupPlan = z.infer<typeof backupPlanSchema>;
 
 // 版本修复器, 开发者可以在此处检查导入的record是否是最新版本, 如果不是,可以用changeData对其版本进行修复升级
-export type DataVersionFixer<T = unknown> = (
-  record: Record<T>,
-  changeData: (recipe: (base: T) => void) => void
+export type DataVersionFixer<T, U = unknown> = (
+  record: Record<U>,
+  setData: (recipe: (base: U) => T) => void,
+  changeData: (recipe: (base: U) => never) => void
 ) => void;
 
 // 数据记录
@@ -40,13 +41,13 @@ export default class JsonDb<T> {
   readonly debug: boolean = false;
   private data: Immutable<T>;
   private autoSaveFile: () => void = () => {};
-  private versionFixer: DataVersionFixer = () => {};
+  private versionFixer: DataVersionFixer<T> = () => {};
 
   constructor(params: {
     file: string; // 数据文件
     defaultValue: T; // 默认值
     version?: number; // 版本号
-    versionFixer?: DataVersionFixer; // 版本修复器
+    versionFixer?: DataVersionFixer<T>; // 版本修复器
     disableAutoSave?: boolean; // 是否禁用自动保存
     autoSaveWaitMilliseconds?: number; // 自动保存延迟
     backup?: BackupPlan; // 备份计划
@@ -170,11 +171,17 @@ export default class JsonDb<T> {
 
   importRecord(record: Record<unknown>) {
     this.data = record.data as Immutable<T>;
-    this.versionFixer(record, (recipe) => {
-      this.data = produce((d) => {
-        recipe(d);
-      })(record.data);
-    });
+    this.versionFixer(
+      record,
+      (recipe) => {
+        this.set(recipe(this.data));
+      },
+      (recipe) => {
+        this.data = produce((d) => {
+          recipe(d);
+        })(record.data);
+      }
+    );
   }
 
   exportRecord(): Record<unknown> {
