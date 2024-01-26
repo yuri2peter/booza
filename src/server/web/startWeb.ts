@@ -12,9 +12,7 @@ import { fileLog } from '../utils/log';
 
 export default async function startWeb() {
   // port
-  const serverPort = process.env.SERVER_PORT
-    ? Number(process.env.SERVER_PORT)
-    : SERVER_PORT;
+  const serverPort = SERVER_PORT;
   if (serverPort) {
     const portAvailable = await checkPort(serverPort);
     if (!portAvailable) {
