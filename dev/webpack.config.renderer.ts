@@ -76,14 +76,15 @@ const config: Configuration = {
         ],
         include: /\.module\.css$/,
       },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-      },
+      // prefer css-loader
+      // {
+      //   test: /\.scss$/,
+      //   use: ['style-loader', 'css-loader', 'sass-loader'],
+      // },
+      // {
+      //   test: /\.less$/,
+      //   use: ['style-loader', 'css-loader', 'less-loader'],
+      // },
       {
         test: /\.svg$/,
         use: 'file-loader',

@@ -7,7 +7,7 @@ export function startChii(port = 0) {
   consoleLog('Starting Chii Web debugger...', 'chii');
   start({
     port,
-    basePath: '/chii',
+    basePath: '/',
   });
   consoleLog('Chii Web debugger started.', 'chii');
 }
