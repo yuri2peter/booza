@@ -24,6 +24,7 @@ import {
   USE_SOCKET,
   USE_CHII,
   OPEN_BROWSER_AFTER_WEB_DEV_START,
+  OPEN_CHII_AFTER_WEB_DEV_START,
 } from '../src/common/config';
 
 const config: Configuration = {
@@ -155,9 +156,18 @@ const config: Configuration = {
   },
   devServer: {
     port: DEV_RENDERER_PORT,
-    open: OPEN_BROWSER_AFTER_WEB_DEV_START && {
-      target: ['http://127.0.0.1:' + DEV_RENDERER_PORT],
-    },
+    open: (() => {
+      const target: string[] = [];
+      if (OPEN_BROWSER_AFTER_WEB_DEV_START) {
+        target.push('http://127.0.0.1:' + DEV_RENDERER_PORT);
+      }
+      if (OPEN_CHII_AFTER_WEB_DEV_START) {
+        target.push('http://127.0.0.1:' + CHII_PORT + '/chii');
+      }
+      return {
+        target,
+      };
+    })(),
     hot: true,
     watchFiles: [
       'src/common/**/*',

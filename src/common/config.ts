@@ -55,3 +55,7 @@ export const OPEN_BROWSER_AFTER_WEB_SERVER_START =
 // 前端web开发时是否自动打开浏览器
 export const OPEN_BROWSER_AFTER_WEB_DEV_START =
   true && IS_DEV && IS_WIN && !USE_ELECTRON;
+
+// 前端web开发时是否自动打开CHII
+export const OPEN_CHII_AFTER_WEB_DEV_START =
+  true && USE_CHII && IS_DEV && IS_WIN;
