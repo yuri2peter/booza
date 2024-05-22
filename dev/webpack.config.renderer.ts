@@ -56,6 +56,11 @@ const config: Configuration = {
         exclude: /node_modules/,
       },
       {
+        test: /\.ts(x)?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.css$/,
         use: [
           'style-loader',
@@ -68,11 +73,6 @@ const config: Configuration = {
           'postcss-loader',
         ],
         exclude: /\.module\.css$/,
-      },
-      {
-        test: /\.ts(x)?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
