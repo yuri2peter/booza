@@ -41,6 +41,11 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
+      {
+        test: /\.(js|jsx)$/,
         use: [
           'babel-loader',
           {
@@ -50,6 +55,8 @@ const config: Configuration = {
                 // eslint-disable-next-line node/no-unpublished-require
                 IS_DEV && require.resolve('react-refresh/babel'),
               ].filter(Boolean),
+              sourceMaps: IS_DEV,
+              inputSourceMap: IS_DEV,
             },
           },
         ],
