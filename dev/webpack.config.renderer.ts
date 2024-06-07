@@ -203,7 +203,13 @@ const config: Configuration = {
       },
     ],
     historyApiFallback: true,
-    client: { progress: true },
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+        runtimeErrors: true,
+      },
+    },
     proxy: proxyConfigParser({
       // API请求代理
       '/api': [

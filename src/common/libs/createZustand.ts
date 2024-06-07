@@ -12,6 +12,8 @@ export function createZustandStore<T extends object, U extends object>(
     return create(
       persist(creator, {
         name: persistName,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        partialize: ({ actions, ...rest }: any) => rest, // filter actions
       })
     );
   } else {
