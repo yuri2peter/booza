@@ -34,13 +34,13 @@ export function zodSafeNumber(defaultValue = 0) {
 
 export function zodSafeArray<T extends ZodTypeAny>(
   schema: T,
-  defaultValue = []
+  defaultValue?: T['_output'][]
 ) {
   return z
     .array(schema)
     .nullable()
     .optional()
-    .transform((t) => t || defaultValue);
+    .transform((t) => t || defaultValue || []);
 }
 
 export function zodSafeType<T extends ZodTypeAny>(
