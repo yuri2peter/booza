@@ -21,7 +21,7 @@ export async function saveUploads(fileField: unknown) {
       '.' +
       nanoid() +
       ext
-    ).replace(/\s+/g, '-');
+    ).replace(/[\s())]+/g, '-');
     const newFilepath = path.resolve(runtimeUploadsPath, newFilename);
     await fs.move(f.filepath, newFilepath);
     return {
