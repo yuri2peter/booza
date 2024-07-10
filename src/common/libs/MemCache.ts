@@ -1,7 +1,3 @@
-const storage: {
-  [key: string]: any;
-} = {};
-
 export default class MemCache {
   static EXPIRE_TIME = {
     ONE_HOUR: 3600,
@@ -9,10 +5,10 @@ export default class MemCache {
     ONE_WEEK: 604800,
     ONE_MONTH: 2592000,
   };
-  namespace: string;
-  constructor(namespace = '') {
-    this.namespace = namespace.replace(/\//g, '-');
-  }
+  storage: {
+    [key: string]: any;
+  } = {};
+  constructor() {}
   /**
    * 设置一个缓存
    * @param key string 键名
@@ -27,7 +23,7 @@ export default class MemCache {
       expire,
       createAt: Date.now(),
     };
-    storage[path] = data;
+    this.storage[path] = data;
   }
 
   /**
@@ -37,7 +33,7 @@ export default class MemCache {
    * */
   has(key: any) {
     const path = this._getPath(key);
-    const data = storage[path];
+    const data = this.storage[path];
     if (data === undefined) return false;
     try {
       if (
@@ -62,7 +58,7 @@ export default class MemCache {
    * */
   get(key: string, defaultValue = undefined) {
     const path = this._getPath(key);
-    const data = storage[path];
+    const data = this.storage[path];
     if (data === undefined) return defaultValue;
     try {
       if (
@@ -97,9 +93,14 @@ export default class MemCache {
    * */
   remove(key: string) {
     const path = this._getPath(key);
-    delete storage[path];
+    delete this.storage[path];
   }
+
+  removeAll() {
+    this.storage = {};
+  }
+
   _getPath(key: string) {
-    return `/${this.namespace}/${key}`;
+    return key;
   }
 }
