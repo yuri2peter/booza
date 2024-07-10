@@ -1,7 +1,7 @@
 import path from 'path';
 import JsonDb from 'src/common/libs/jsonDb';
 import { runtimeDataPath } from 'src/common/paths.app';
-import { version, DataSchema, defaultValue } from 'src/common/type/data';
+import { DataSchema, defaultValue } from 'src/common/type/data';
 import { consoleLog } from 'src/common/utils/dev';
 
 const dbInstance = new JsonDb({
@@ -11,18 +11,12 @@ const dbInstance = new JsonDb({
     cronExp: '*/30 * * * *',
     maxBackups: 3,
   },
-  version,
   defaultValue,
-  versionFixer: (record, setData) => {
-    if (record.version !== version) {
-      consoleLog(
-        `Data schema version ${record.version} should be ${version}.`,
-        'db'
-      );
-      // try fixing
-      setData((d) => DataSchema.parse(d));
-      consoleLog('Data schema version fixed.', 'db');
-    }
+  onLoad: (get, set) => {
+    // Schema fix
+    set(DataSchema.parse(get()));
+    // const data = get();
+    // Other fixes...
   },
 });
 consoleLog('Database initialized.', 'db');

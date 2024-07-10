@@ -4,7 +4,6 @@
  */
 import dayjs from 'dayjs';
 import { Cron } from 'croner';
-import { Immutable, produce } from 'immer';
 import fs from 'fs-extra';
 import lodash from 'lodash';
 import { z } from 'zod';
@@ -20,59 +19,52 @@ const backupPlanSchema = z.object({
 // 备份计划
 type BackupPlan = z.infer<typeof backupPlanSchema>;
 
-// 版本修复器, 开发者可以在此处检查导入的record是否是最新版本, 如果不是,可以用changeData对其版本进行修复升级
-export type DataVersionFixer<T, U = unknown> = (
-  record: Record<U>,
-  setData: (recipe: (base: U) => T) => void,
-  changeData: (recipe: (base: U) => undefined) => void
-) => void;
+type DataLoadHandle<T> = (get: () => T, set: (data: T) => void) => void;
 
 // 数据记录
 interface Record<T> {
-  data: Immutable<T>;
-  version: number;
+  data: T;
   updatedAtString: string;
   updatedAtTime: number;
 }
 
 export default class JsonDb<T> {
   readonly file: string = '';
-  readonly version: number = 0;
   readonly debug: boolean = false;
-  private data: Immutable<T>;
-  private autoSaveFile: () => void = () => {};
-  private versionFixer: DataVersionFixer<T> = () => {};
+  private data: T;
+  private onLoad: DataLoadHandle<T>;
+  save: (immidiate?: boolean) => void = () => {};
 
   constructor(params: {
     file: string; // 数据文件
     defaultValue: T; // 默认值
-    version?: number; // 版本号
-    versionFixer?: DataVersionFixer<T>; // 版本修复器
-    disableAutoSave?: boolean; // 是否禁用自动保存
-    autoSaveWaitMilliseconds?: number; // 自动保存延迟
+    onLoad?: DataLoadHandle<T>; // 数据加载后对数据的额外操作（如初始化、完整性检查）
+    saveThrottleDelay?: number; // 保存动作的延迟
     backup?: BackupPlan; // 备份计划
     debug?: boolean; // 是否开启调试
   }) {
     const {
       file,
       defaultValue,
-      version = 1,
-      versionFixer = () => {},
-      disableAutoSave = false,
-      autoSaveWaitMilliseconds = 8000,
+      onLoad = () => {},
+      saveThrottleDelay = 1000,
       backup,
       debug,
     } = params;
     this.debug = !!debug;
     this.file = file;
-    this.version = version;
-    this.data = defaultValue as Immutable<T>;
-    if (!disableAutoSave) {
-      this.autoSaveFile = throttle(() => {
+    this.data = defaultValue;
+    const saveThrottle = throttle(() => {
+      this.saveFile();
+    }, saveThrottleDelay);
+    this.save = (immidiate = false) => {
+      if (immidiate) {
         this.saveFile();
-      }, autoSaveWaitMilliseconds);
-    }
-    this.versionFixer = versionFixer;
+      } else {
+        saveThrottle();
+      }
+    };
+    this.onLoad = onLoad;
     this.loadFile();
     this.startBackupPlan(backup);
   }
@@ -82,19 +74,8 @@ export default class JsonDb<T> {
   }
 
   set(data: T) {
-    this.data = data as Immutable<T>;
-    this.autoSaveFile();
-  }
-
-  /**
-   * see more usage at `immer.js`
-   * @param recipe change value inside the recipe, but no returns
-   */
-  changeData(recipe: (base: T) => undefined) {
-    this.data = produce((d) => {
-      recipe(d);
-    })(this.data) as Immutable<T>;
-    this.autoSaveFile();
+    this.data = data;
+    this.save(true);
   }
 
   private loadFile(file?: string) {
@@ -163,30 +144,24 @@ export default class JsonDb<T> {
     );
   }
 
-  saveFile(file?: string) {
+  private saveFile(file?: string) {
     const filePath = file || this.file;
     fs.ensureFileSync(filePath);
     fs.writeFileSync(filePath, JSON.stringify(this.exportRecord(), null, 2));
   }
 
   importRecord(record: Record<unknown>) {
-    this.data = record.data as Immutable<T>;
-    this.versionFixer(
-      record,
-      (recipe) => {
-        this.set(recipe(this.data));
-      },
-      (recipe) => {
-        this.data = produce((d) => {
-          recipe(d);
-        })(record.data);
+    this.data = record.data as T;
+    this.onLoad(
+      () => this.data,
+      (newData: T) => {
+        this.data = newData;
       }
     );
   }
 
   exportRecord(): Record<unknown> {
     return {
-      version: this.version,
       updatedAtString: new Date().toString(),
       updatedAtTime: new Date().getTime(),
       data: this.data,
@@ -201,7 +176,7 @@ import path from 'path';
 import JsonDb from './libs/jsonDb';
 
 const dbFile = path.resolve('./data/db/main.json');
-const dbBackUpDir = path.resolve('./data/db/main_backup');
+const dbBackUpDir = path.resolve('./data/db/main_backups');
 
 export const db = new JsonDb({
   file: dbFile,
@@ -210,10 +185,14 @@ export const db = new JsonDb({
     cronExp: '*/30 * * * *',
     maxBackups: 150,
   },
-  version: 1,
   defaultValue: { hello: 'world' },
   debug: true,
-  versionFixer: () => {},
+  onLoad: (get, set) => {
+    // Schema fix
+    set(DataSchema.parse(get()));
+    const data = get();
+    // Other fixes...
+  },
 });
 
 =================
