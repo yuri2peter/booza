@@ -1,0 +1,15 @@
+{
+  "lang": "zh-CN",
+  "name": "Booza",
+  "short_name": "Booza",
+  "description": "React + NodeJS + Electron 项目开发模板。",
+  "start_url": "/",
+  "orientation": "any",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/assets/icon.png",
+      "sizes": "1024x1024"
+    }
+  ]
+}

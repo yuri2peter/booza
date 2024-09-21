@@ -37,7 +37,11 @@ function applyApp(app: Koa) {
   app.use(
     koaPushState(path.resolve(rendererPath, 'index.html'), (ctx) => {
       const { request } = ctx;
-      return request.method === 'GET' && !request.path.startsWith('/api/');
+      return (
+        request.method === 'GET' &&
+        !request.path.startsWith('/api/') &&
+        !request.path.includes('.')
+      );
     })
   );
 }
